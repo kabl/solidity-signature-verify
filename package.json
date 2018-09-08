@@ -1,0 +1,16 @@
+{
+  "name": "solidity-signature-verify",
+  "version": "1.0.0",
+  "description": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "author": "kabl",
+  "license": "MIT",
+  "dependencies": {
+    "web3": "^1.0.0-beta.36"
+  }
+}
