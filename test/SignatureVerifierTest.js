@@ -11,9 +11,44 @@ contract('SignatureVerifier', (accounts) => {
     var msg = 'Hello World'
     var hash = web3.utils.sha3(msg)
 
-    var sigOrig = (await web3.eth.sign(hash, address))
+    var signature = (await web3.eth.sign(hash, address))
     
-    await instance.verifySignature(hash, sigOrig, address);
+    var result = await instance.verifySignature(hash, signature, address);
+    assert.equal(result, true)
+  })
+
+  it('verifySignature wrong address', async function() {
+    var instance = await SignatureVerifier.deployed()
+    var msg = 'Hello World'
+    var hash = web3.utils.sha3(msg)
+
+    var signature = (await web3.eth.sign(hash, address))
+    
+    var result = await instance.verifySignature(hash, signature, accounts[1]);
+    assert.equal(result, false)
+  })
+
+  it('verifySignature wrong hash', async function() {
+    var instance = await SignatureVerifier.deployed()
+    var msg = 'Hello World'
+    var hash = web3.utils.sha3(msg)
+
+    var signature = (await web3.eth.sign(hash, address))
+    
+    var hashWrong = web3.utils.sha3("Other message")
+    var result = await instance.verifySignature(hashWrong, signature, accounts[1]);
+    assert.equal(result, false)
+  })
+
+  it('verifySignature wrong signature', async function() {
+    var instance = await SignatureVerifier.deployed()
+    var msg = 'Hello World'
+    var hash = web3.utils.sha3(msg)
+
+    var signature = (await web3.eth.sign(hash, accounts[1]))
+    
+    var result = await instance.verifySignature(hash, signature, address);
+    assert.equal(result, false)
   })
 
   it('recoverSigner result matches address', async function() {
@@ -21,12 +56,12 @@ contract('SignatureVerifier', (accounts) => {
     var msg = 'Hello World'
     var hash = web3.utils.sha3(msg)
 
-    var sigOrig = (await web3.eth.sign(hash, address))
+    var signature = (await web3.eth.sign(hash, address))
 
-    result = await instance.recoverSigner.call(hash, sigOrig)
+    result = await instance.recoverSigner.call(hash, signature)
     assert.equal(result, address)
 
-    await instance.verifySignature(hash, sigOrig, address);
+    await instance.verifySignature(hash, signature, address);
   })
 
   it('recoverSigner2 result matches address', async function() {
