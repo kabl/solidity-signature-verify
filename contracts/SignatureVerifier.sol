@@ -3,9 +3,15 @@ pragma solidity ^0.4.24;
 
 contract SignatureVerifier {
 
-    function verifySignature(bytes32 hash, bytes signature, address signer) public pure returns (address) {
+    address public owner;
+
+    constructor() public {
+        owner = msg.sender;
+    }
+
+    function verifySignature(bytes32 hash, bytes signature, address signer) public pure returns (bool) {
         address addressFromSig = recoverSigner(hash, signature);
-        require(addressFromSig == signer, "Wrong signature");
+        return addressFromSig == signer;
     }
 
     /**
@@ -43,5 +49,12 @@ contract SignatureVerifier {
         address addr = ecrecover(prefixedHash, v, r, s);
 
         return addr;
+    }
+
+    function destroy() public returns (bool) {
+        require(owner == msg.sender);
+
+        selfdestruct(owner);
+        return true;
     }
 }
