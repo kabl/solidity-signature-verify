@@ -2,11 +2,11 @@
 
 Demonstration how to verify signature in an Ethereum Smart Contract. 
 
-## Running
+## Running Truffle tests
 1.) Install truffle
 2.) Install ganache-cli
 
-```
+```bash
 # First time
 npm install
 
@@ -14,6 +14,14 @@ npm install
 ganache-cli
 
 truffle test
+```
+
+# Running explorative tests on Rinkeby
+The smart contract is deployed at: https://rinkeby.etherscan.io/address/0x15f65f6372e3f5a5c3a68b0812d81b19b860299c
+To interact with it you need a Rinkeby full node or Infura or whatever JSON RPC access you have. 
+
+```bash
+node rinkeby/RinkebyExecution.js 
 ```
 
 ## References
