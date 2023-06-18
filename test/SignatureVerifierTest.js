@@ -79,3 +79,4 @@ contract('SignatureVerifier', (accounts) => {
     assert.equal(result, address)
   })
 })
+type Reader interface{ ... }
